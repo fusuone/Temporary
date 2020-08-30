@@ -1,0 +1,258 @@
+/* eslint-disable react/no-unused-state */
+import React, { PureComponent, Fragment } from 'react';
+import { connect } from 'dva';
+import { Divider, Dropdown, Menu, Form, Icon, Spin, Card, Button, Table, message } from 'antd';
+import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import http from '@/utils/http';
+import CrudeAdd from './CrudeAdd';
+
+@connect(({
+  user
+}) => ({
+  currentUser: user.currentUser
+}))
+@Form.create()
+class StockIn extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.columns = [{
+      title: '商品编号',
+      dataIndex: 'wareno',
+      width: 150
+    }, {
+      title: '商品名称',
+      dataIndex: 'warename',
+      width: 150
+    }, {
+      title: '商品型号',
+      dataIndex: 'model',
+      width: 150
+    }, {
+      title: '商品描述',
+      dataIndex: 'description',
+      width: 150
+    }, {
+      title: '进货日期',
+      dataIndex: 'billdate',
+      width: 150
+    }, {
+      title: '成品数量',
+      dataIndex: 'qty',
+      width: 150
+    }, {
+      title: '次品数量',
+      dataIndex: 'qty1',
+      width: 150
+    }, {
+      title: '坏品数量',
+      dataIndex: 'qty2',
+      width: 150
+    }, {
+      title: '坏品数量',
+      dataIndex: 'qty3',
+      width: 150
+    }, {
+      title: '商品总金额',
+      dataIndex: 'price',
+      width: 150
+    }, {
+      key: '_fill_'
+    }, {
+      title: '操作',
+      key: 'action',
+      fixed: 'right',
+      width: 120,
+      render: text => (
+        <Fragment>
+          <a onClick={() => this.gotoEdit(text)}>编辑</a>
+          <Divider type="vertical" />
+          <Dropdown
+            overlay={
+              <Menu>
+                <Menu.Item>
+                  <a onClick={() => this.addTrack(text)}>详情</a>
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            <a>更多 <Icon type="down" /></a>
+          </Dropdown>
+        </Fragment>
+      )
+    }];
+    this.state = {
+      listData: {
+        list: [],
+        total: 0
+      },
+      reqParams: {
+        page: 1,
+        flag: 0,
+        uid: props.currentUser.admin
+      // ...initialSearchParams
+      },
+      selectedRowKeys: [],
+      getLoading: false,
+      delLoading: false,
+      showTableAdd: false,
+      addOrEdit: null,
+      auditFlag: null
+    };
+
+    props.getContext && props.getContext(this);
+  }
+
+
+  // onDelete = () => {
+  //   const { submitting, selectedRowKeys } = this.state;
+  //   if (submitting) return;
+  //   if (selectedRowKeys.length <= 0) {
+  //     message.info('请至少选择一项');
+  //   } else {
+  //     Modal.confirm({
+  //       title: `选中${selectedRowKeys.length}条，确定删除？`,
+  //       okText: '确认',
+  //       okType: 'danger',
+  //       cancelText: '取消',
+  //       onOk: () => {
+  //         this.setState({ submitting: true });
+  //         http({
+  //           method: 'get',
+  //           api: 'delstock',
+  //           params: { items: selectedRowKeys.join(',') }
+  //         }).then((result) => {
+  //           const { status, msg } = result;
+  //           if (status === '0') {
+  //             message.success(msg);
+  //             this.onRefresh('reset');
+  //           } else {
+  //             message.warn(msg);
+  //           }
+  //         }).catch(() => {
+  //           //
+  //         }).then(() => {
+  //           this.setState({ submitting: false });
+  //         });
+  //       }
+  //     });
+  //   }
+  // }
+
+  componentDidMount() {
+    this.getList();
+  }
+
+  gotoAdd = () => {
+    this.setState({
+      showCrudeAdd: true,
+      addOrEdit: '0',
+      activeItem: {}
+    });
+  }
+
+  // 去编辑
+  gotoEdit = (item) => {
+    this.setState({
+      showCrudeAdd: true,
+      addOrEdit: '1',
+      activeItem: item
+    });
+  }
+
+  // 选中行
+  handleRowSelectChange = (selectedRowKeys) => {
+    this.setState({ selectedRowKeys });
+  }
+
+  clearRowSelect = () => {
+    this.setState({ selectedRowKeys: [] });
+  }
+
+  getList = () => {
+    const { getLoading, reqParams } = this.state;
+    if (getLoading) return;
+    this.clearRowSelect();
+    this.setState({ getLoading: true });
+    http({
+      method: 'get',
+      api: 'get_stock_statistic',
+      params: {
+        ...reqParams
+        // begindate: reqParams.begindate.format('YYYY-MM-DD'),
+        // enddate: reqParams.enddate.format('YYYY-MM-DD')
+      }
+    }).then((result) => {
+      const { status, msg, data } = result;
+      if (status === '0') {
+        this.setState({
+          listData: {
+            list: data.list,
+            total: Number(data.total)
+          },
+          getLoading: false
+        });
+      } else {
+        message.warn(msg);
+        this.setState({
+          listData: {
+            list: [1],
+            total: 1
+          },
+          getLoading: false
+        });
+      }
+    }).catch(() => {
+      this.setState({ getLoading: false });
+    });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  renderSearch() {
+
+  }
+
+  render() {
+    const { listData, selectedRowKeys, getLoading, delLoading } = this.state;
+    return (
+      <PageHeaderWrapper>
+        <div>
+          <Spin spinning={getLoading || delLoading}>
+            <Card bordered={false}>
+              {this.renderSearch()}
+              <Button icon="plus" type="primary" onClick={this.gotoAdd} style={{ marginTop: 10 }}>
+          新增商品进货信息
+              </Button>
+              {selectedRowKeys.length > 0 &&
+              <Button icon="delete" onClick={this.onDelete} style={{ marginLeft: 10 }}>
+          删除
+              </Button>
+        }
+              <Table
+                scroll={{ x: 1250, y: 350 }}
+                rowKey="billno"
+                size="middle"
+                columns={this.columns}
+                dataSource={listData.list}
+                onChange={this.handleTableChange}
+                rowSelection={{
+                  selectedRowKeys,
+                  onChange: this.handleRowSelectChange
+                }}
+              />
+            </Card>
+
+          </Spin>
+          <CrudeAdd
+            visible={this.state.showCrudeAdd}
+            addOrEdit={this.state.addOrEdit}
+            activeItem={this.state.activeItem}
+            handleRefresh={() => this.onRefresh('reset')}
+            handleVisible={bool => this.setState({ showCrudeAdd: bool })}
+          />
+        </div>
+      </PageHeaderWrapper>
+    );
+  }
+}
+
+export default StockIn;

@@ -1,0 +1,451 @@
+import React, { PureComponent } from 'react';
+import { Table, Card, Divider, Menu, Dropdown, Icon, Spin, Button, Modal, Select } from 'antd';
+import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import { connect } from 'dva';
+import http from '@/utils/http';
+import styles from './RealName.less';
+import { imageCompress } from '@/cps/ImagePicker/utils';
+import { reduce } from 'zrender/lib/core/util';
+
+@connect(({
+  user
+}) => ({
+  currentUser: user.currentUser
+}))
+class RealName extends PureComponent{
+    constructor(props){
+        super(props);
+        this.state={
+          getLoading: true,
+          RealNameDate : [],
+          RealName_billno: "",
+          modalVisible: false, //modal
+          status: -10,
+          modalData: {}
+        }
+        this.columns = [
+            {
+              title: '法定代表人',
+              width: 110,
+              dataIndex: 'real_name',
+              key: 'real_name',
+              fixed: 'left',
+            },
+            {
+              title: '身份选择',
+              width: 100,
+              dataIndex: 'work_style',
+              key: 'work_style',
+              fixed: 'left',
+              render: (text, record) => {
+                let style = '';
+                if(record.work_style==0){
+                  style = "个人";
+                }else{
+                  style = "企业";
+                }
+                return(
+                  <div>
+                  {style}
+                </div>
+                );
+              }
+                
+            },
+            {
+              title: '身份证正面',
+              dataIndex: 'card_img1',
+              key: 'card_img1',
+              width: 120,
+              render: (text, record) => {
+                return(
+                  <img style={{width:80,height:50}} src={record.card_img1} alt="身份证正面" />
+                );
+              }
+            },
+            {
+              title: '身份证反面',
+              dataIndex: 'card_img2',
+              key: 'card_img2',
+              width: 120,
+              render: (text, record) => {
+                return(
+                  <img style={{width:80,height:50}} src={record.card_img2} alt="身份证反面"/>
+                );
+              }
+            },
+            {
+              title: '手拿身份证',
+              dataIndex: 'card_img3',
+              key: 'card_img3',
+              width: 120,
+              render: (text, record) => {
+                return(
+                  <img style={{width:80,height:50}} src={record.card_img3} alt="手拿身份证"/>
+                );
+              }
+            },
+            {
+              title: '营业执照',
+              dataIndex: 'license_img',
+              key: 'license_img',
+              width: 120,
+              render: (text, record) => {
+                return(
+                  <img style={{width:80,height:50}} src={record.license_img} alt="营业执照" />
+                );
+              }
+            },
+            {
+              title: '公司名',
+              dataIndex: 'company',
+              key: 'company',
+              width: 170,
+              render: (text, record) => {
+                return(
+                  <div className={styles.company}>{record.company}</div>
+                );
+              }
+            },
+            {
+              title: '营业执照号',
+              dataIndex: 'license_no',
+              key: 'license_no',
+              width: 180,
+              render: (text, record) => {
+                return(
+                  <div className={styles.license_no}>{record.license_no}</div>
+                );
+              }
+            },
+            {
+              title: '性别',
+              dataIndex: 'sex',
+              key: 'sex',
+              width: 50,
+              render: (text, record) => {
+                let sex = ""
+                if(record.sex == 0){
+                  sex = "男";
+                }else{
+                  sex = "女";
+                }
+                return(
+                  <div>{sex}</div>
+                );
+              }
+            },
+            {
+              title: '身份证到期日期',
+              dataIndex: 'end_date',
+              key: 'end_date',
+              width: 150,
+            },
+            {
+              title: '状态',
+              dataIndex: 'styles',
+              key: 'styles',
+              render: (text, record) => {
+                let styles = "";
+                if(record.styles == -1){
+                  styles = "未通过";
+                }else if(record.styles == 1){
+                  styles = "待审核";
+                }else if(record.styles == 2){
+                  styles = "审核通过";
+                }else{
+                  styles = "未提交审核";
+                }
+                return(
+                  <div>{styles}</div>
+                );
+              }
+            },
+            {
+              title: '操作',
+              key: 'operation',
+              fixed: 'right',
+              width: 130,
+              render: (text, record) =>{
+                this.setState({
+                  RealName_billno: record.billno
+                });
+                return(
+                  <div>
+                  <a onClick={this.showModal}>审核</a>
+                  <Divider type="vertical" />
+                  <Dropdown overlay={this.OperateMenu}>
+                    <a style={{color:"#1890ff"}} className="ant-dropdown-link" href="#">
+                      更多 <Icon type="down" />
+                    </a>
+                  </Dropdown>
+                </div>
+                );
+              }
+                
+            },
+          ];
+
+          //操作菜单
+          this.OperateMenu = (
+            <Menu>
+              <Menu.Item>
+                <a>
+                  更多
+                </a>
+              </Menu.Item>
+            </Menu>
+          );
+    }
+
+
+    componentDidMount() {
+      this.getList();
+    };
+
+    //设置modalData
+    getModalData = (key) =>{
+      let key1 = key - 1;
+      let modalData1 = this.state.RealNameDate[key1]
+      this.setState({
+        modalData: modalData1
+      });
+    }
+
+    //获取审核列表数据
+    getList = () => {
+      http({
+        method: 'post',
+        api: 'check_realname',
+        params: {
+          userno: this.props.currentUser.userno
+        }
+      }).then((result) => {
+        const { status, msg, data } = result;
+        if (status === '0') {
+          this.setState({
+            RealNameDate: data.list,
+            getLoading: false
+          });
+        } else {
+          message.warn(msg);
+          this.setState({
+            RealNameDate: [],
+            getLoading: false
+          });
+        }
+      }).catch(() => {
+        this.setState({ getLoading: false });
+      });
+    }
+
+
+    //modal
+    showModal = () => {
+      this.setState({
+        modalVisible: true,
+      });
+    };
+  
+    handleOk = e => {
+      this.setState({
+        status: 2
+      }),this.setRealNameList();
+    };
+  
+    handleCancel = e => {
+      this.setState({
+        modalVisible: false,
+      });
+    };
+
+    //未通过
+    notAdopted = (e) =>{
+      this.setState({
+        status: -1
+      }),this.setRealNameList();
+    }
+
+    ///未通过原因 
+    onChange = (value) => {
+    }
+
+    onBlur = () => {
+    }
+
+    onFocus = () => {
+    }
+
+    onSearch = (val) => {
+    }
+    
+    //更新审核列表数据
+    setRealNameList = () => {
+      if(this.state.status==-10) {return;}
+      http({
+        method: 'post',
+        api: 'set_realname',
+        params: {
+          userno: this.props.currentUser.userno,
+          billno: this.state.modalData["billno"],
+          status: this.state.status
+        }
+      }).then((result) => {
+        const { status, msg, data } = result;
+        if (status === '0') {
+          this.setState({ 
+            getLoading: false,
+            modalVisible: false,
+            status: -10
+          }),this.getList();
+        } else {
+          message.warn(msg);
+          this.setState({
+            getLoading: false,
+            status: -10
+            // modalVisible: false
+          });
+        }
+      }).catch(() => {
+        this.setState({ getLoading: false, status: -10 });
+      });
+    }
+
+
+
+
+
+    render(){
+      const { getLoading } = this.state;
+      const { Option } = Select;  
+        return(
+          <PageHeaderWrapper>
+            <div>
+              <div  className={styles.example}>
+                <Spin spinning={ getLoading } />
+              </div>
+              <Card>
+                <Table 
+                onRow={record => {
+                  return {
+                    onClick: event => {
+                      this.setState({
+                        modalData: record,
+                        RealName_billno: record.billno
+                      });
+                    }, // 点击行
+                  };
+                }}
+                columns={this.columns} dataSource={this.state.RealNameDate} scroll={{ x: 1500, y: 300 }} />
+              </Card>
+              {/* modal */}
+              <div>
+                <Modal
+                  title="实名审核"
+                  visible={this.state.modalVisible}
+                  onOk={this.handleOk}
+                  onCancel={this.handleCancel}
+                  width={1000}
+                  maskClosable={false}
+                  footer={[
+                    <Button key="back" onClick={this.handleCancel}>
+                      返回
+                    </Button>,
+                    <Button type="danger" onClick={this.notAdopted}>
+                      未通过
+                    </Button>,
+                    <Button key="submit" type="primary" onClick={this.handleOk}>
+                      通过
+                    </Button>,
+                  ]}
+                >
+                  <div className={styles.RealNameContent}>
+                    <div className={styles.list}>
+                        <div className={styles.left}>真正姓名(法定代表人)：</div>
+                        <div className={styles.right}>{this.state.modalData.real_name}</div>
+                    </div>
+                    <div className={styles.list}>
+                        <div className={styles.left}>身份选择：</div>
+                        <div className={styles.right}>{this.state.modalData.work_style==1? "企业": "个人"}</div>
+                    </div>
+                    <div className={styles.list}>
+                        <div className={styles.left}>身份证正面：</div>
+                        <div className={styles.right}>
+                          <img src={this.state.modalData.card_img1} />
+                        </div>
+                    </div>
+                    <div className={styles.list}>
+                        <div className={styles.left}>身份证反面：</div>
+                        <div className={styles.right}>
+                          <img src={this.state.modalData.card_img2} />
+                        </div>
+                    </div>
+                    <div className={styles.list}>
+                        <div className={styles.left}>手拿身份证：</div>
+                        <div className={styles.right}>
+                          <img src={this.state.modalData.card_img3} />
+                        </div>
+                    </div>
+                    <div className={styles.list}>
+                        <div className={styles.left}>营业执照：</div>
+                        <div className={styles.right}>
+                          <img src={this.state.modalData.license_img} />
+                        </div>
+                    </div>
+                    <div className={styles.list}>
+                        <div className={styles.left}>公司名称：</div>
+                        <div className={styles.right}>{this.state.modalData.company}</div>
+                    </div>
+                    <div className={styles.list}>
+                        <div className={styles.left}>营业执照号：</div>
+                        <div className={styles.right}>{this.state.modalData.license_no}</div>
+                    </div>
+                    <div className={styles.list}>
+                        <div className={styles.left}>身份证号：</div>
+                        <div className={styles.right}>{this.state.modalData.card_no}</div>
+                    </div>
+                    <div className={styles.list}>
+                        <div className={styles.left}>性别：</div>
+                        <div className={styles.right}>{this.state.modalData.sex==0? "男":"女"}</div>
+                    </div>
+                    <div className={styles.list}>
+                        <div className={styles.left}>身份证到期日期：</div>
+                        <div className={styles.right}>{this.state.modalData.end_date}</div>
+                    </div>
+                    <div className={styles.list}>
+                        <div className={styles.left}>认证状态：</div>
+                        <div className={styles.right}>{this.state.modalData.styles==1? "正在审核中": "未通过"}</div>
+                    </div>
+                    <div className={styles.list}>
+                        <div className={styles.left}>备注：</div>
+                        <div className={styles.right}>
+                          <Select
+                            showSearch
+                            style={{ width: 200 }}
+                            placeholder="请选择未通过原因"
+                            optionFilterProp="children"
+                            onChange={this.onChange}
+                            onFocus={this.onFocus}
+                            onBlur={this.onBlur}
+                            onSearch={this.onSearch}
+                            filterOption={(input, option) =>
+                              option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            }
+                          >
+                            <Option value="证件照片模糊">证件照片模糊</Option>
+                            <Option value="证件信息与认证姓名不一致">证件信息与认证姓名不一致</Option>
+                            {/* <Option value="">Tom</Option> */}
+                          </Select>
+                        </div>
+                    </div>
+                    
+                  </div>
+                </Modal>
+              </div>
+            </div>
+          </PageHeaderWrapper> 
+        );
+    }
+}
+
+export default RealName;

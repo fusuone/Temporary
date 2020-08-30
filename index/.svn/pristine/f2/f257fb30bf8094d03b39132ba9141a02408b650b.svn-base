@@ -1,0 +1,299 @@
+import React, { PureComponent, Fragment } from 'react';
+import { Divider, Dropdown,Modal, Menu, Form, Icon, Spin, Card, Button, Table, message ,Input} from 'antd';
+import { connect } from 'dva';
+import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import http from '@/utils/http';
+import styles from './WareSetting.less'
+import CrudeAdd from './CrudeAdd1';
+
+const { Search } = Input;
+@connect(({
+  user
+}) => ({
+  currentUser: user.currentUser
+}))
+@Form.create()
+class WareSetting extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state={
+      getLoading: true,
+      info: {}, //商城信息
+      stockCheckDate: [],
+      RealName_billno: "",
+      modalVisible: false, //modal
+      status: -10,
+    modalData: {},
+    updateData: [], //导入的数据
+    EditModalVisible: false,
+    EditModalData: {},
+    // 
+    previewVisible: false,
+    previewImage: '',
+    fileList: [
+    ],
+    fileImage: [],
+    img: "",
+  }
+  this.columns = [
+    {
+      title: '首页图片',
+      width: 180,
+      dataIndex: 'image1',
+      key: 'image1',
+      fixed: 'left',
+      render: (text, record) => {
+        return(
+          <img style={{width:100,height:60}} src={record.image1} />
+        );
+      }
+    },
+      {
+        title: '商品名称',
+        dataIndex: 'waresname',
+        key: 'waresname',
+        width: 180,
+      },
+      {
+        title: '商品编码',
+        dataIndex: 'productno',
+        key: 'productno',
+        width: 150,
+      },
+      {
+        title: '型号',
+        dataIndex: 'model',
+        key: 'model',
+        width: 150,
+      },
+      {
+        title: '系列',
+        dataIndex: 'series',
+        key: 'series',
+        width:150,
+      },
+      {
+        title: '品牌',
+        dataIndex: 'brand',
+        key: 'brand',
+        width: 120,
+      },
+      {
+        title: '分类',
+        dataIndex: 'catname',
+        key: 'catname',
+        width: 120,
+      },
+      {
+        title: '单价',
+        dataIndex: 'price',
+        key: 'price',
+        width: 120,
+      },
+      {
+        title: '商城单价',
+        dataIndex: 'mallprice',
+        key: 'mallprice',
+        width: 120,
+      },
+      {
+        title: '单位',
+        dataIndex: 'unit',
+        key: 'unit',
+        width: 100,
+      },
+      {
+        title: '添加时间',
+        dataIndex: 'billdate',
+        key: 'billdate',
+      },
+      {
+      title: '操作',
+      key: 'action',
+      fixed: 'right',
+      width: 150,
+      render: text => (
+        <Fragment>
+          <a onClick={() => this.gotoEdit(text)}>编辑</a>
+          <Divider type="vertical" />
+          <Dropdown
+            overlay={
+              <Menu>
+                <Menu.Item>
+                  <a onClick={(ev) => this.delTrack(ev,text)}>删除</a>
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            <a>更多 <Icon type="down" /></a>
+          </Dropdown>
+        </Fragment>
+      )
+    }];
+    this.state = {
+      listData: {
+        list: [],
+        total: 0
+      },
+      reqParams: {
+        admin: this.props.currentUser.admin, //管理员billno
+        keyword:'',
+        pagesize: 15,
+        page: 1,
+      },
+      getLoading: false,//加载动画
+      delLoading: false,//删除中
+      showTableAdd: false,
+      addOrEdit: null,
+      auditFlag: null
+    };
+    props.getContext && props.getContext(this);
+  }
+
+
+  componentDidMount() {
+    this.getList();
+  }
+   //搜索
+  onSearch = (value) => {
+    this.state.reqParams.keyword = value;
+    this.getList();
+  }
+  gotoAdd = () => {
+    this.setState({
+      showCrudeAdd: true,
+      addOrEdit: '0',
+      activeItem: {}
+    });
+  }
+//删除
+  delTrack = (ev,text) =>{
+    Modal.confirm({
+      title: `商品信息删除`,
+      content: `你确定要把商品billno为 ${text.billno} 的商品执行删除操作吗？`,
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => this.confirmHandleOk(text.billno),
+      onCancel: this.confirmHandleCencle,
+    });
+   
+  }
+  //取消删除
+  confirmHandleCencle = () => {
+    message.info("操作已取消");
+  }
+  //删除
+  confirmHandleOk = (d) => {
+    http({
+      method: 'get',
+      api: 'delwares',
+      params: {
+        items: d,
+      }
+    }).then((result) => {
+      const { status, msg, data } = result;
+      if (status === '0') {
+        message.info("删除成功");
+        this.getList();
+      } else {
+        message.warn(msg);
+      }
+    }).catch(() => {
+      message.info("操作失败");
+    });
+  }
+  // 去编辑
+  gotoEdit = (item) => {
+      this.setState({
+        addOrEdit: '1',
+        activeItem: item,
+        showCrudeAdd: true,
+    });
+    this.getList()
+  }
+  //分页
+  handleTableChange = (page,pageSize)=>{
+    this.state.reqParams.page = page;
+    this.getList()
+  }
+  getList = () => {
+    const { getLoading, reqParams } = this.state;
+    if (getLoading) return;
+    this.setState({ getLoading: true });
+    http({
+      method: 'get',
+      api: 'getwares',
+      params: {
+        ...reqParams
+      }
+    }).then((result) => {
+      const { status, msg, data } = result;
+      if (status === '0') {
+        this.setState({
+          listData: {
+            list: data.list,
+            total: Number(data.total)
+          },
+          getLoading: false
+        });
+      } else {
+        message.warn(msg);
+        this.setState({
+          listData: {
+            list: [1],
+          },
+          getLoading: false
+        });
+      }
+    }).catch(() => {
+      this.setState({ getLoading: false });
+    });
+  }
+  
+  render() {
+    const { listData, getLoading, delLoading } = this.state;
+    return (
+      <PageHeaderWrapper>
+        <div>
+          {/* spinning  是否为加载状态 */}
+          <Spin spinning={getLoading || delLoading}>
+            <Card bordered={false}>
+              <Button icon="plus" type="primary" onClick={this.gotoAdd} style={{ marginTop: 10 }}>
+          新增商品进货信息
+              </Button>
+              <Search
+                  placeholder="请输入商品名称或商品编码" 
+                  onSearch={this.onSearch} 
+                  enterButton="搜索"
+                  size="large"
+                  style={{width:"80%",textAlign:"left",float:"right"}}
+                      />
+              <Table 
+                className={styles['ant-table']}
+                scroll={{ x:1700,y: 600 }}//高
+                dataSource={listData.list}//数据来源
+                columns={this.columns}//每行显示
+                pagination={{
+                  current: this.state.reqParams.page,
+                  onChange:this.handleTableChange,
+                  pageSize: 15,
+                  defaultCurrent: 1,
+                  total: listData.total,
+                }}
+              />
+            </Card>
+
+          </Spin>
+          <CrudeAdd
+            visible={this.state.showCrudeAdd}//是否显示添加页面
+            addOrEdit={this.state.addOrEdit}
+            activeItem={this.state.activeItem}
+            handleRefresh={() =>this.getList()}//子页面回调刷新列表
+            handleVisible={bool => this.setState({ showCrudeAdd: bool })}
+          />
+        </div>
+      </PageHeaderWrapper>
+    );
+  }
+}
+export default WareSetting;

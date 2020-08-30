@@ -1,0 +1,169 @@
+import React, { PureComponent, Fragment } from 'react';
+import { connect } from 'dva';
+import { Divider, Dropdown, Menu, Form, Icon, Spin, Card, Button, Table, message } from 'antd';
+import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import http from '@/utils/http';
+
+@connect(({
+  user
+}) => ({
+  currentUser: user.currentUser
+}))
+@Form.create()
+class StockOut extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.columns = [{
+      title: '商品编号',
+      dataIndex: 'wareno',
+      width: 150
+    }, {
+      title: '进货日期',
+      dataIndex: 'billdate',
+      width: 150
+    }, {
+      title: '商品总数量',
+      dataIndex: 'qty',
+      width: 150
+    }, {
+      title: '商品总金额',
+      dataIndex: 'price',
+      width: 150
+    }, {
+      key: '_fill_'
+    }, {
+      title: '操作',
+      key: 'action',
+      fixed: 'right',
+      width: 120,
+      render: text => (
+        <Fragment>
+          <a onClick={() => this.gotoEdit(text)}>编辑</a>
+          <Divider type="vertical" />
+          <Dropdown
+            overlay={
+              <Menu>
+                <Menu.Item>
+                  <a onClick={() => this.addTrack(text)}>录入码单</a>
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            <a>更多 <Icon type="down" /></a>
+          </Dropdown>
+        </Fragment>
+      )
+    }];
+    this.state = {
+      listData: {
+        list: [],
+        total: 0
+      },
+      reqParams: {
+        page: 1,
+        flag: 1,
+        uid: props.currentUser.admin,
+        date: props.currentUser.date
+      // ...initialSearchParams
+      },
+      selectedRowKeys: [],
+      getLoading: false,
+      delLoading: false,
+      showTableAdd: false,
+      addOrEdit: null,
+      auditFlag: null
+    };
+
+    props.getContext && props.getContext(this);
+  }
+
+
+  componentDidMount() {
+    this.getList();
+  }
+
+  clearRowSelect = () => {
+    this.setState({ selectedRowKeys: [] });
+  }
+
+  getList = () => {
+    const { getLoading, reqParams } = this.state;
+    if (getLoading) return;
+    this.clearRowSelect();
+    this.setState({ getLoading: true });
+    http({
+      method: 'get',
+      api: 'get_stock_statistic',
+      params: {
+        ...reqParams
+        // begindate: reqParams.begindate.format('YYYY-MM-DD'),
+        // enddate: reqParams.enddate.format('YYYY-MM-DD')
+      }
+    }).then((result) => {
+      const { status, msg, data } = result;
+      if (status === '0') {
+        this.setState({
+          listData: {
+            list: data.list,
+            total: Number(data.total)
+          },
+          getLoading: false
+        });
+      } else {
+        message.warn(msg);
+        this.setState({
+          listData: {
+            list: [1],
+            total: 1
+          },
+          getLoading: false
+        });
+      }
+    }).catch(() => {
+      this.setState({ getLoading: false });
+    });
+  }
+
+  renderOperator() {
+    return (
+      <div>
+        <Button icon="plus" type="primary" onClick={this.gotoAdd}>
+          新增商品出货信息
+        </Button>
+        <Button icon="delete" type="danger" onClick={this.onDelete}>
+          删除
+        </Button>
+      </div>
+    );
+  }
+
+  render() {
+    const { listData, selectedRowKeys, getLoading, delLoading } = this.state;
+    return (
+      <PageHeaderWrapper>
+        <div>
+          <Spin spinning={getLoading || delLoading}>
+            <Card bordered={false}>
+              {this.renderOperator()}
+              <Table
+                scroll={{ x: 1250, y: 350 }}
+                rowKey="billno"
+                size="middle"
+                columns={this.columns}
+                dataSource={listData.list}
+                onChange={this.handleTableChange}
+                rowSelection={{
+                  selectedRowKeys,
+                  onChange: this.handleRowSelectChange
+                }}
+              />
+            </Card>
+
+          </Spin>
+        </div>
+      </PageHeaderWrapper>
+    );
+  }
+}
+
+export default StockOut;

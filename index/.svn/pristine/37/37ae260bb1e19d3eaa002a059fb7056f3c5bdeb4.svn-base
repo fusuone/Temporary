@@ -1,0 +1,26 @@
+import React  from 'react';
+
+
+
+class RegularPurchase extends React.PureComponent {
+  constructor(props){
+    super(props);
+    this.state = {
+     
+    }
+  }
+    
+  getPaginationdata=(page, pageSize)=>{
+    console.log(page)
+  }
+
+  render() {
+    return (
+      <div>
+        <li>我的常购商品</li>
+      </div>
+    );
+  }
+}
+
+export default RegularPurchase;

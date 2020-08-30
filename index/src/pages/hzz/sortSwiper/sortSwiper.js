@@ -1,0 +1,439 @@
+import React, { PureComponent } from 'react';
+import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import {
+  Table,
+  Card,
+  Icon,
+  Spin,
+  Button,
+  message,
+  Row,
+  Col,
+  Form,
+  DatePicker,
+} from 'antd';
+import moment from 'moment';
+import { connect } from 'dva';
+import http from '@/utils/http';
+import * as XLSX from 'xlsx';
+import ExportJsonExcel from 'js-export-excel';
+import styles from './sortSwiper.less';
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
+
+@connect(({ user }) => ({
+  currentUser: user.currentUser,
+}))
+@Form.create()
+class sortSwiper extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      getLoading: true,
+      info: {}, //商城信息
+      stockCheckDate: [],
+      RealName_billno: '',
+      modalVisible: false, //modal
+      status: -10,
+      modalData: {},
+      reqParams: {
+        admin: this.props.admin, //管理员billno
+        pagesize: 15,
+        page: 1,
+      },
+      moudelDate:[],
+      updateData: [], //导入的数据
+      total: 0,
+      EditModalVisible: false,
+      EditModalData: {},
+      begindate:this.GetDateStr(-7),
+      enddate:this.GetDateStr(0),
+      previewVisible: false,
+      previewImage: '',
+      fileList: [],
+      fileImage: [],
+      img: '',
+    };
+    this.columns = [
+      {
+        title: '商品图片',
+        width: 130,
+        dataIndex: 'image1',
+        key: 'image1',
+        fixed: 'left',
+        render: (text, record) => {
+          return <img style={{ width: 100, height: 60 }} src={record.image1} />;
+        },
+      },
+      {
+        title: '商品名称',
+        width: 150,
+        dataIndex: 'warename',
+        key: 'warename',
+      },
+      {
+        title: '商品单价',
+        dataIndex: 'price',
+        key: 'price',
+        width: 150,
+      },
+      {
+        title: '数量',
+        dataIndex: 'type',
+        key: 'type',
+        width: 120,
+        render: (text, record) => {
+          return <div>{record.type == 0 ? '进销的产品' : '生产的产品'}</div>;
+        },
+      },
+      {
+        title: '商城在售',
+        dataIndex: 'onsale',
+        key: 'onsale',
+        width: 120,
+        render: (text, record) => {
+          return <div>{record.type == 0 ? '下架不在售' : '上架在售'}</div>;
+        },
+      },
+      {
+        title: '库存数',
+        dataIndex: 'qty',
+        key: 'qty',
+        width: 100,
+      },
+      {
+        title: '次品',
+        dataIndex: 'qty1',
+        key: 'uniqty1t',
+        width: 100,
+      },
+      {
+        title: '坏品',
+        dataIndex: 'qty2',
+        key: 'qty2',
+        width: 100,
+      },
+      {
+        title: '其他',
+        dataIndex: 'qty3',
+        key: 'qty3',
+        width: 100,
+      },
+      {
+        title: '单位',
+        dataIndex: 'unit',
+        key: 'unit',
+        width: 100,
+      },
+      {
+        title: '添加时间',
+        dataIndex: 'billdate',
+        key: 'billdate',
+      },
+    ];
+  }
+  	
+GetDateStr=(AddDayCount) =>{ 
+  var dd = new Date();
+  dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+  var y = dd.getFullYear(); 
+  var m = (dd.getMonth()+1)<10?"0"+(dd.getMonth()+1):(dd.getMonth()+1);//获取当前月份的日期，不足10补0
+  var d = dd.getDate()<10?"0"+dd.getDate():dd.getDate();//获取当前几号，不足10补0
+  return y+"-"+m+"-"+d; 
+}
+//挂载前
+  componentDidMount() {
+    this.getAdminInfo();
+  }
+  //获取入库信息
+  getAdminInfo =() => {
+    http({
+      method: 'get',
+      api: 'get_stock_body',
+      params: {
+        flag:"1",
+        admin: this.props.currentUser.admin,
+        date:this.state.begindate,
+        date2:this.state.enddate,
+        customerno:''
+      },
+    })
+      .then(result => {
+        const { status, msg, data } = result;
+        if (status === '0') {
+        } else {
+          message.warn(msg);
+        }
+        this.setState( { 
+          getLoading:false,
+          submitting: false,
+          moudelDate:data.list
+         });
+      })
+      .catch(() => {
+        // this.setState({ getLoading: false });
+      });
+  };
+  /////////////////////////////////////////////////////////////////////
+  //导入模板
+  modelExcel = () => {
+    let option = {};
+    let dataTable = [];
+    let obj = {
+      供应商编号: '111111', //供应商编号
+      供应商名称: '11111111122', //供应商名称
+      合同编号: '123456', //合同编号
+      产品编号: '121212', //产品编号
+      商品名称: '商品名称', //商品名称
+      价格: '123456', //价格
+      单位: '箱', //单位
+      型号:'型号',//型号
+      二维码:'152025662',
+      商品总量:'122',
+      次品:'0',
+      坏品:'0',
+      其它:'0',
+      商品描述: 'description', //
+    };
+    dataTable.push(obj);
+    option.fileName = '出库导入数据模板';
+    option.datas = [
+      {
+        sheetData: dataTable,
+        sheetName: '出库导入数据模板',
+        sheetFilter: [
+          '供应商编号',
+          '供应商名称',
+          '合同编号',
+          '产品编号', //产品编号
+          '商品名称', //商品名称
+          '价格', //价格
+          '单位', //单位
+          '型号',//型号
+          '二维码',
+          '商品总量',
+          '次品',
+          '坏品',
+          '其它',
+          '商品描述', //
+        ],
+        sheetHeader: [
+          '供应商编号',
+          '供应商名称',
+          '合同编号',
+          '产品编号', //产品编号
+          '商品名称', //商品名称
+          '价格', //价格
+          '单位', //单位
+          '型号',//型号
+          '二维码',
+          '商品总量',
+          '次品',
+          '坏品',
+          '其它',
+          '商品描述', //
+        ],
+      },
+    ];
+
+    var toExcel = new ExportJsonExcel(option);
+    toExcel.saveExcel();
+  };
+  //时间选择回调
+  onChange=async(date,dateString)=>{
+    await this.setState({
+      begindate:dateString[0],
+      enddate:dateString[1]
+    })
+    this.getAdminInfo();
+  }
+  /////导入操作
+  onImportExcel = file => {
+    // 获取上传的文件对象
+    const { files } = file.target;
+    // 通过FileReader对象读取文件
+    const fileReader = new FileReader();
+    fileReader.onload = event => {
+      try {
+        const { result } = event.target;
+        // 以二进制流方式读取得到整份excel表格对象
+        const workbook = XLSX.read(result, { type: 'binary' });
+        // 存储获取到的数据
+        let data = [];
+        // 遍历每张工作表进行读取（这里默认只读取第一张表）
+        for (const sheet in workbook.Sheets) {
+          // esline-disable-next-line
+          if (workbook.Sheets.hasOwnProperty(sheet)) {
+            // 利用 sheet_to_json 方法将 excel 转成 json 数据
+            data = data.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]));
+            // break; // 如果只取第一张表，就取消注释这行
+          }
+        }
+        // 最终获取到并且格式化后的 json 数据
+        message.success('上传成功！');
+        this.setState({
+          updateData: data,
+        });
+        this.addProduct(data);
+      } catch (e) {
+        // 这里可以抛出文件类型错误不正确的相关提示
+      }
+    };
+    // 以二进制方式打开文件
+    fileReader.readAsBinaryString(files[0]);
+  };
+
+  //转换
+  addProduct = data => {
+    data.map((v, k) => {
+      let reqParams_1 = {
+        userno: this.props.currentUser.userno,
+        admin: this.props.currentUser.admin,
+        username: this.props.currentUser.username,
+        customerno: v['供应商编号'],
+        customername: v['供应商名称'],
+        contractno: v['合同编号'],
+        flag:1,
+        goodsList:[{
+          wareno:v['产品编号'],
+          warename:v['商品名称'],
+          image1:"",
+          image2:"",
+          image3:"",
+          price:v['价格'],
+          unit:v['单位'],
+          model:v['型号'],
+          productno:v['二维码'],
+          serialno:'',
+          description:v['商品描述'],
+          qty:v['商品总量'],
+          qty1:v['次品'],
+          qty2:v['坏品'],
+          qty3:v['其它'],
+        }]
+      };
+      http({
+        method: 'post',
+        api: 'setstock',
+        data: reqParams_1,
+      })
+        .then(result => {
+          const { status, msg, data } = result;
+          if (status === '0') {
+          } else {
+            message.warn(msg);
+          }
+        })
+        .catch(() => {});
+    });
+    this.getAdminInfo();
+  };
+  handleCancelPreview = async file => {
+    this.setState({ previewVisible: false });
+  };
+
+  handlePreview = async file => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+
+    this.setState({
+      previewImage: file.url || file.preview,
+      previewVisible: true,
+    });
+  };
+
+  handleChangePreview = ({ fileList }) => {
+    const fileImageArray = [];
+    for (let i = 0; i < fileList.length; i++) {
+      let a = '';
+      if (fileList[i].response) {
+        a = fileList[i].response.data.source;
+      } else {
+        a = fileList[i].url;
+      }
+      fileImageArray[i] = a;
+    }
+    setTimeout(() => {
+      this.setState({
+        fileImage: fileImageArray,
+      });
+    }, 4000);
+    this.setState({
+      fileList,
+    });
+  };
+
+  beforeUpload = (file, fileList) => {};
+  render() {
+    const {
+      getLoading,
+    } = this.state;
+    const {RangePicker } = DatePicker;
+    return (
+      <PageHeaderWrapper>
+        <div className={styles.example}>
+          <Spin spinning={getLoading} />
+        </div>
+        <Card>
+          <Row gutter={24}>
+            <Col style={{ height: '80px', width: '100%', textAlign: 'center' }}>
+            <RangePicker
+              onChange={this.onChange}
+              defaultValue={[moment(this.GetDateStr(-7),"YYYY/MM/DD"), moment(this.GetDateStr(0),'YYYY/MM/DD')]}
+            />
+            </Col>
+            <Col style={{ height: '50px', textAlign: 'center' }}>
+              <Button type="primary" className={styles['upload-wrap']}>
+                <Icon type="upload" />
+                <input
+                  className={styles['file-uploader']}
+                  type="file"
+                  accept=".xlsx, .xls"
+                  onChange={this.onImportExcel}
+                />
+                <span className={styles['upload-text']}>批量导入商品数据</span>
+              </Button>
+              <p className={styles['upload-tip']}>(支持 .xlsx、.xls 格式的文件)</p>
+              <Button onClick={this.modelExcel} style={{ marginLeft: '15px' }}>
+                下载导入模板
+              </Button>
+            </Col>
+          </Row>
+          <Table
+            rowKey={record=>record.id}
+            className={styles['ant-table']}
+            //点击显示详情
+            onRow={record => {
+              return {
+                onClick: event => {
+                  this.setState({
+                    modalData: record,
+                    RealName_billno: record.billno,
+                  });
+                }, // 点击行
+              };
+            }}
+            columns={this.columns}
+            dataSource={this.state.moudelDate}
+            scroll={{ x: 1500, y: 800 }}
+            pagination={{
+              current: this.state.reqParams.page,
+              onChange: this.getPaginationdata,
+              pageSize: 15,
+              defaultCurrent: 1,
+              total: this.state.total,
+            }}
+          />
+        </Card>
+   </PageHeaderWrapper>
+    );
+  }
+}
+export default sortSwiper;

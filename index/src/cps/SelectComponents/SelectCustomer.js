@@ -1,0 +1,223 @@
+// 选择客户
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'dva';
+import { Row, Modal, message, Spin, Table, Input } from 'antd';
+
+import http from '@/utils/http';
+import config from '@/common/config';
+
+import ModalTitle from '../ModalTitle';
+
+const initialSearchParams = {
+  custname: ''
+};
+
+@connect(({
+  user
+}) => ({
+  currentUser: user.currentUser
+}))
+class SelectCustomer extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.columns = [{
+      title: '客户名称',
+      dataIndex: 'title',
+      width: 130
+    }, {
+      title: '客户编号',
+      dataIndex: 'billno',
+      width: 150
+    }, {
+      key: '_fill_'
+    }];
+
+    this.state = {
+      loading: false,
+      listData: {
+        list: [],
+        total: 0
+      },
+      reqParams: {
+        page: 1,
+        uid: props.currentUser.userno,
+        admin: props.currentUser.admin,
+        ...initialSearchParams
+      },
+      // 选择
+      selectedRows: [],
+      selectedRowKeys: []
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.visible && nextProps.visible !== this.props.visible) {
+      const { listData } = this.state;
+      if (listData.list.length > 0) return; // 如果存在则不重复获取
+      this.onRefresh();
+    }
+  }
+
+  // 搜索
+  onSearch = (value) => {
+    this.changeReqParams({
+      page: 1,
+      custname: value
+    }, this.getList);
+  }
+
+  // 刷新
+  onRefresh = () => {
+    if (this.searchRef) {
+      this.searchRef.input.input.value = '';
+    }
+    this.changeReqParams({
+      page: 1,
+      ...initialSearchParams
+    }, this.getList);
+  }
+
+  handleTableChange = (pagination) => {
+    this.changeReqParams({
+      page: pagination.current
+    }, this.getList);
+  }
+
+  handleOk = () => {
+    const { handleOk = () => null } = this.props;
+    const item = this.state.selectedRows[0];
+    if (item) {
+      handleOk(item);
+      this.handleCancel();
+    } else {
+      message.info('请选择一项！');
+    }
+  }
+
+  handleCancel = () => {
+    const { handleVisible = () => null } = this.props;
+    handleVisible(false);
+  }
+
+  // 关闭之后
+  handleAfterClose = () => {
+    //
+  }
+
+  onRowSelect = (record) => {
+    this.setState({
+      selectedRowKeys: [record.id],
+      selectedRows: [record]
+    });
+  }
+
+  // 选中行
+  handleRowSelectChange = (selectedRowKeys, selectedRows) => {
+    this.setState({ selectedRowKeys, selectedRows });
+  }
+
+  // 清除选中的行
+  clearRowSelect = () => {
+    this.setState({ selectedRowKeys: [], selectedRows: [] });
+  }
+
+  // 修改所需的请求参数
+  changeReqParams = (params, cb = () => null) => {
+    this.setState(prveState => ({
+      reqParams: {
+        ...prveState.reqParams,
+        ...params
+      }
+    }), cb);
+  }
+
+  getList = () => {
+    if (this.state.loading) return;
+    this.clearRowSelect();
+    this.setState({ loading: true });
+    http({
+      method: 'get',
+      api: 'getcustomer',
+      params: {
+        ...this.state.reqParams,
+        ispana: this.props.customerType
+      }
+    }).then((result) => {
+      const { status, msg, data } = result;
+      if (status === '0') {
+        this.setState(prevState => ({
+          loading: false,
+          listData: {
+            ...prevState.listData,
+            list: data.list,
+            total: Number(data.total)
+          }
+        }));
+      } else {
+        message.warn(msg);
+        this.setState({ loading: false });
+      }
+    }).catch(() => {
+      this.setState({ loading: false });
+    });
+  }
+
+  render() {
+    const { loading, listData, reqParams, selectedRowKeys } = this.state;
+    const { customerType } = this.props;
+    const title = customerType === '0' ? '选择客户' : '选择加工工厂';
+    return (
+      <Modal
+        title={<ModalTitle title={title} onReload={this.onRefresh} onClose={this.handleCancel} />}
+        maskClosable={false}
+        closable={false}
+        visible={this.props.visible}
+        onCancel={this.handleCancel}
+        onOk={this.handleOk}
+        afterClose={this.handleAfterClose}
+      >
+        <Spin spinning={loading}>
+          <Row style={{ marginBottom: '16px' }}>
+            <Input.Search ref={ref => this.searchRef = ref} enterButton="搜索" placeholder="客户名称" onSearch={this.onSearch} />
+          </Row>
+          <Table
+            rowKey="id"
+            size="middle"
+            scroll={{ x: 330, y: 300 }}
+            bordered={false}
+            columns={this.columns}
+            dataSource={listData.list}
+            onChange={this.handleTableChange}
+            onRow={record => ({
+              onClick: () => {
+                this.onRowSelect(record);
+              }
+            })}
+            rowSelection={{
+              type: 'radio',
+              selectedRowKeys,
+              onChange: this.handleRowSelectChange
+            }}
+            pagination={{
+              total: listData.total,
+              current: reqParams.page,
+              defaultCurrent: 1,
+              defaultPageSize: config.defaultPageSize
+            }}
+          />
+        </Spin>
+      </Modal>
+    );
+  }
+}
+
+SelectCustomer.propTypes = {
+  customerType: PropTypes.oneOf(['0', '1']) // 0 客户，1合作伙伴
+};
+
+SelectCustomer.defaultProps = {
+  customerType: '0'
+};
+
+export default SelectCustomer;

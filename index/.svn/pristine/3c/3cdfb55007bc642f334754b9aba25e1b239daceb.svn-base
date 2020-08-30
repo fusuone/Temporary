@@ -1,0 +1,410 @@
+import React, { Fragment,PureComponent } from 'react';
+import { connect } from 'dva';
+import PropTypes from 'prop-types';
+import { Row, Col, Button,Modal, message, Form, Select,Table,Icon } from 'antd';
+import moment from 'moment';
+import http from '@/utils/http';
+
+const { Option } = Select;
+
+@connect(({ user }) => ({
+  currentUser: user.currentUser,
+}))
+@Form.create()
+class CrudeAdd extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      submitting: false,
+      selectWorkerType: '',
+      showSelectDepot: false,
+      showSelectModel: false,
+      showSelectWorker: false,
+      showSelectFactory: false,
+      showSelectCustomer: false,
+      getLoading: false,
+      billno:'',
+      showSelectGecarplate: false,
+      carData: [],
+      contractData:[],
+      moudelDate:[]
+    };
+    this.columns=[
+      {
+        title: '商品图片',
+        width: 130,
+        dataIndex: 'image1',
+        key: 'image1',
+        render: (text, record) => {
+          return <img style={{ width: 120, height: '80' }} src={record.image1} />;
+        },
+      },{
+        title: '名称',
+        dataIndex: 'waresname',
+        width: "13%"
+      },{
+        title: '单价',
+        dataIndex: 'price',
+        width: "10%"
+      },{
+        title: '数量',
+        dataIndex: 'qty',
+        width: "10%"
+      },{
+        title: '型号',
+        dataIndex: 'model',
+        width: "10%"
+      },{
+        title: '单位',
+        dataIndex: 'unit',
+        width: "10%"
+      },{
+        title: '是否可用红包',
+        dataIndex: 'model',
+        width: "10%",
+        render: (text, record) => {
+          return record.envelope==0?'否':'是';
+        },
+      },{
+        title: '是否可用卷',
+        dataIndex: 'ticket',
+        width: "10%",
+        render: (text, record) => {
+          return record.envelope==0?'否':'是';
+        },
+      },
+      {/*占位使其不会变型*/}, 
+      {
+        title: '操作',
+        fixed: 'right',
+        width: 100,
+        render: text => (
+          <Fragment>
+            <a onClick={() => this.gotoEdit(text)}><Icon type="plus-circle" style={{fontSize:'40px'}}/></a>
+          </Fragment>
+        )
+      }
+    ]
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.visible && nextProps.visible !== this.props.visible) {
+      if (nextProps.addOrEdit === '1') {
+        this.setFieldsValue(nextProps);
+      }
+    }
+  }
+  setFieldsValue = props => {
+    const { activeItem } = props;
+    const billdate = moment(activeItem.billdate);
+    const revedate = moment(activeItem.revedate);
+    this.props.form.setFieldsValue({
+      custno: activeItem.custno,
+      custname: activeItem.custname,
+      billdate: billdate.isValid() ? billdate : undefined,
+      crudeno: activeItem.crudeno,
+      suffixno: activeItem.suffixno,
+      qty: activeItem.qty,
+      extent: activeItem.extent,
+      unit: activeItem.unit,
+      class: activeItem.class,
+      factory: activeItem.factory,
+      factoryno: activeItem.factoryno,
+      reveuser: activeItem.reveuser,
+      revedate: revedate.isValid() ? revedate : undefined,
+      revecar: activeItem.revecar,
+      reveplate: activeItem.reveplate,
+      driver: activeItem.driver,
+      artname: activeItem.model,
+      remark: activeItem.remark,
+      // 选择的工艺信息
+      cpsl: activeItem.cpsl,
+      cpmf: activeItem.cpmf,
+      stretch: activeItem.stretch,
+      veins: activeItem.veins,
+      processtxt: activeItem.processtxt,
+      increq: activeItem.increq,
+      vision: activeItem.vision,
+      attach: activeItem.attach,
+    });
+  };
+  //获取批发商信息
+  getList = () => {
+    const { getLoading } = this.state;
+    if (getLoading) return;
+    this.setState({ getLoading: true });
+    http({
+      method: 'get',
+      api: 'getcustomer',
+      params: {
+        admin: this.props.currentUser.admin,
+        uid: this.props.currentUser.userno,
+        ispaging:2,
+        custname: '',
+      },
+    })
+      .then(result => {
+        const { status, msg, data } = result;
+        if (status === '0') {
+          this.setState({
+            carData: data.list,
+            getLoading: false,
+          });
+          // console.log(data);
+        } else {
+          message.warn(msg);
+          this.setState({
+            getLoading: false,
+          });
+        }
+      })
+      .catch(() => {
+        this.setState({ getLoading: false });
+      });
+  };
+  getcontractList=()=>{
+    console.log(1)
+      const { billno} = this.state;
+      this.setState({ getLoading: true });
+      http({
+        method: 'get',
+        api: 'get_contract',
+        params: {
+          customerno:billno
+        },
+      })
+        .then(result => {
+          const { status, msg, data } = result;
+          console.log(data)
+          if (status === '0') {
+            this.setState({
+              contractData: data.list,
+              getLoading: false,
+            });
+          } else {
+            message.warn(msg);
+            this.setState({
+              getLoading: false,
+            });
+          }
+        })
+        .catch(() => {
+          this.setState({ getLoading: false });
+        });
+  }
+  getmallwares=()=>{
+    const { billno} = this.state;
+      this.setState({ getLoading: true });
+      http({
+        method: 'get',
+        api: 'getmallwares',
+        params: {
+          admin: this.props.currentUser.admin,
+          keyword: ''
+        },
+      })
+        .then(result => {
+          const { status, msg, data } = result;
+          console.log(data)
+          if (status === '0') {
+            this.setState({
+              moudelDate: data.list,
+              showSelectGecarplate:true,
+              getLoading: false,
+            });
+          } else {
+            message.warn(msg);
+            this.setState({
+              getLoading: false,
+            });
+          }
+        })
+        .catch(() => {
+          this.setState({ getLoading: false });
+        });
+  }
+  handleCancel = () => {
+    const { handleVisible = () => null } = this.props;
+    handleVisible(false);
+  };
+  handleCancel1 = () => {
+   this.setState({
+    showSelectGecarplate:false
+   })
+  };
+  //完全关闭之后
+  handleAfterClose = () => {
+    this.props.form.resetFields();
+  };
+  onFocus=()=>{
+    this.getList()
+  }
+  getdd=(input, option)=>{
+     return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  }
+  onChange =async(value,input) => {
+    await this.setState({
+      billno:input.props.value
+    })
+    this.getList()
+    this.getcontractList()
+    this.props.form.setFieldsValue({
+      warwss:''
+    })
+  };
+  // 提交
+  handleSubmit = e => {
+    e.preventDefault();
+    const {
+      currentUser,
+      addOrEdit,
+      activeItem,
+      handleRefresh = () => null,
+      form: { validateFieldsAndScroll },
+    } = this.props;
+    validateFieldsAndScroll((err, values) => {
+      if (err) return;
+      this.setState({ submitting: true });
+      const data = {
+        flat: addOrEdit, // 0新增 1编辑
+        billno: activeItem.billno,
+        admin: currentUser.admin,
+        usercode: currentUser.billno,
+        username: currentUser.username,
+        ...values,
+        billdate: values.billdate.format('YYYY-MM-DD HH:mm:ss'),
+        revedate: values.revedate && values.revedate.format('YYYY-MM-DD HH:mm:ss'),
+      };
+      http({
+        method: 'post',
+        api: 'setcrude',
+        data,
+      })
+        .then(({ status, msg }) => {
+          if (status === '0') {
+            message.success(msg);
+            this.handleCancel();
+            handleRefresh();
+          } else {
+            message.warn(msg);
+          }
+          this.setState({ submitting: false });
+        })
+        .catch(() => {
+          this.setState({ submitting: false });
+        });
+    });
+  };
+
+  render() {
+    const {
+      addOrEdit,
+      form: { getFieldDecorator, setFieldsValue, disabled, multiple },
+    } = this.props;
+    const { submitting,showSelectGecarplate,moudelDate } = this.state;
+    return (
+      <Modal
+        title={`选择进货商品`}
+        width="40%"
+        maskClosable={false}
+        visible={this.props.visible}
+        onCancel={this.handleCancel}
+        onOk={this.handleSubmit}
+        confirmLoading={submitting}
+        afterClose={this.handleAfterClose}
+      >
+        <Form layout="vertical">
+          <Row gutter={24}>
+            <Col>
+              <Form.Item label="商品类型">
+                {getFieldDecorator('waretype', {
+                  rules: [{ required: true, message: '请输入商品类型' }],
+                })(
+                  <Select
+                    showSearch
+                    onFocus={this.onFocus}
+                    onSearch={this.onFocus}
+                    placeholder='请选择供应商'
+                    onChange={this.onChange}
+                    filterOption={this.getdd}
+                    // filterOption={(input, option) =>
+                    //   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    // }
+                  >
+                    {this.state.carData.map(function(value) {
+                      return (
+                        <Option key={value.id} value={value.billno}>
+                          {value.title}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                )}
+              </Form.Item>
+            </Col>
+            <Col>
+              <Form.Item label="选择合同">
+                {getFieldDecorator('warwss')
+                (
+                  <Select
+                    showSearch
+                    // onFocus={this.onFocus}
+                    // onSearch={this.onFocus}
+                    placeholder='请选择供应商'
+                    // onChange={this.onChange}
+                    filterOption={(input, option) =>
+                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                  >
+                    {this.state.contractData.map(function(value) {
+                      return (
+                        <Option key={value.id} value={value.contrano}>
+                          {value.title}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                )}
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+        <Button type="primary"
+        onClick={this.getmallwares}
+        >选择商品</Button>
+        <Modal
+        visible={showSelectGecarplate}
+        title={`选择进货商品`}
+        width="60%"
+        maskClosable={false}
+        onCancel={this.handleCancel1}
+        confirmLoading={submitting}
+        footer={[
+          <Button type="primary" key="back" onClick={this.handleCancel1}>关闭</Button>
+        ]}
+        afterClose={this.handleAfterClose}
+        >
+        <Table
+          rowKey={record=>record.id}
+          scroll={{ x: 1500, y: 600 }} //高
+          dataSource={moudelDate} //数据来源
+          columns={this.columns} //每行显示
+          pagination={{
+            pageSize: 15,
+            defaultCurrent: 1,            
+          }}
+        />
+        </Modal>
+      </Modal>
+    );
+  }
+}
+CrudeAdd.propTypes = {
+  addOrEdit: PropTypes.oneOf(['0', '1']), // 0新增 1编辑
+};
+
+CrudeAdd.defaultProps = {
+  addOrEdit: '0',
+};
+
+export default CrudeAdd;

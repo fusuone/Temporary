@@ -1,0 +1,256 @@
+2018-09-18 17:34:21 pid:8691 Workerman[start.php] start in DEBUG mode
+2018-09-19 09:36:37 pid:1114 Workerman[start.php] start in DEBUG mode
+2018-09-19 14:46:15 pid:10695 Workerman[start.php] start in DEBUG mode
+2018-09-19 14:47:36 pid:10729 Workerman[start.php] start in DEBUG mode
+2018-09-19 15:12:50 pid:11130 Workerman[start.php] start in DEBUG mode
+2018-09-19 15:27:56 pid:11376 Workerman[start.php] start in DEBUG mode
+2018-09-19 15:32:55 pid:11459 Workerman[start.php] start in DEBUG mode
+2018-09-19 15:33:34 pid:11476 Workerman[start.php] start in DEBUG mode
+2018-09-19 15:36:08 pid:11513 Workerman[start.php] start in DEBUG mode
+2018-09-19 17:38:13 pid:14423 Workerman[start.php] start in DEBUG mode
+2018-09-19 18:05:21 pid:15028 Workerman[start.php] start in DEBUG mode
+2018-09-20 09:38:11 pid:1296 Workerman[start.php] start in DEBUG mode
+2018-09-20 11:24:38 pid:2083 Workerman[start.php] start in DEBUG mode
+2018-09-20 11:24:51 pid:2085 Worker[2085] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:24:51 pid:2083 worker[PHPSocketIO:2085] exit with status 65280
+2018-09-20 11:24:52 pid:2090 Worker[2090] process terminated with ERROR: E_ERROR "Call to undefined method stdClass::emit() in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 61"
+2018-09-20 11:24:52 pid:2083 worker[PHPSocketIO:2090] exit with status 65280
+2018-09-20 11:24:54 pid:2091 Worker[2091] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:24:54 pid:2083 worker[PHPSocketIO:2091] exit with status 65280
+2018-09-20 11:25:18 pid:2093 Worker[2093] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:25:21 pid:2083 worker[PHPSocketIO:2093] exit with status 65280
+2018-09-20 11:25:23 pid:2100 Worker[2100] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:25:23 pid:2083 worker[PHPSocketIO:2100] exit with status 65280
+2018-09-20 11:25:49 pid:2101 Worker[2101] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:25:49 pid:2083 worker[PHPSocketIO:2101] exit with status 65280
+2018-09-20 11:25:50 pid:2105 Worker[2105] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:25:50 pid:2083 worker[PHPSocketIO:2105] exit with status 65280
+2018-09-20 11:25:51 pid:2106 Worker[2106] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:25:51 pid:2083 worker[PHPSocketIO:2106] exit with status 65280
+2018-09-20 11:26:17 pid:2107 Worker[2107] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:26:17 pid:2083 worker[PHPSocketIO:2107] exit with status 65280
+2018-09-20 11:26:17 pid:2116 Worker[2116] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:26:17 pid:2083 worker[PHPSocketIO:2116] exit with status 65280
+2018-09-20 11:26:44 pid:2117 Worker[2117] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:26:44 pid:2083 worker[PHPSocketIO:2117] exit with status 65280
+2018-09-20 11:26:46 pid:2123 Worker[2123] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:26:46 pid:2083 worker[PHPSocketIO:2123] exit with status 65280
+2018-09-20 11:27:11 pid:2125 Worker[2125] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:27:11 pid:2083 worker[PHPSocketIO:2125] exit with status 65280
+2018-09-20 11:27:13 pid:2132 Worker[2132] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:27:13 pid:2083 worker[PHPSocketIO:2132] exit with status 65280
+2018-09-20 11:27:39 pid:2133 Worker[2133] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:27:39 pid:2083 worker[PHPSocketIO:2133] exit with status 65280
+2018-09-20 11:27:42 pid:2150 Worker[2150] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:27:42 pid:2083 worker[PHPSocketIO:2150] exit with status 65280
+2018-09-20 11:28:07 pid:2151 Worker[2151] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:28:07 pid:2083 worker[PHPSocketIO:2151] exit with status 65280
+2018-09-20 11:28:09 pid:2181 Worker[2181] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:28:09 pid:2083 worker[PHPSocketIO:2181] exit with status 65280
+2018-09-20 11:28:35 pid:2182 Worker[2182] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:28:35 pid:2083 worker[PHPSocketIO:2182] exit with status 65280
+2018-09-20 11:28:36 pid:2209 Worker[2209] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:28:36 pid:2083 worker[PHPSocketIO:2209] exit with status 65280
+2018-09-20 11:29:03 pid:2210 Worker[2210] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:29:03 pid:2083 worker[PHPSocketIO:2210] exit with status 65280
+2018-09-20 11:29:03 pid:2215 Worker[2215] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:29:03 pid:2083 worker[PHPSocketIO:2215] exit with status 65280
+2018-09-20 11:29:26 pid:2216 Worker[2216] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:29:26 pid:2083 worker[PHPSocketIO:2216] exit with status 65280
+2018-09-20 11:29:28 pid:2220 Worker[2220] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:29:28 pid:2083 worker[PHPSocketIO:2220] exit with status 65280
+2018-09-20 11:30:05 pid:2244 Workerman[start.php] start in DEBUG mode
+2018-09-20 11:30:08 pid:2246 Worker[2246] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:30:08 pid:2244 worker[PHPSocketIO:2246] exit with status 65280
+2018-09-20 11:30:32 pid:2247 Worker[2247] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:48) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 48"
+2018-09-20 11:30:32 pid:2244 worker[PHPSocketIO:2247] exit with status 65280
+2018-09-20 11:30:58 pid:2256 Workerman[start.php] start in DEBUG mode
+2018-09-20 11:31:03 pid:2258 Worker[2258] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:17) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 17"
+2018-09-20 11:31:03 pid:2256 worker[PHPSocketIO:2258] exit with status 65280
+2018-09-20 11:31:30 pid:2259 Worker[2259] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:17) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 17"
+2018-09-20 11:31:30 pid:2256 worker[PHPSocketIO:2259] exit with status 65280
+2018-09-20 11:31:33 pid:2264 Worker[2264] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:17) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 17"
+2018-09-20 11:31:33 pid:2256 worker[PHPSocketIO:2264] exit with status 65280
+2018-09-20 11:31:59 pid:2271 Workerman[start.php] start in DEBUG mode
+2018-09-20 11:32:03 pid:2273 Worker[2273] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:17) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 17"
+2018-09-20 11:32:03 pid:2271 worker[PHPSocketIO:2273] exit with status 65280
+2018-09-20 11:32:06 pid:2274 Worker[2274] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:17) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 17"
+2018-09-20 11:32:06 pid:2271 worker[PHPSocketIO:2274] exit with status 65280
+2018-09-20 11:32:30 pid:2275 Worker[2275] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:17) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 17"
+2018-09-20 11:32:30 pid:2271 worker[PHPSocketIO:2275] exit with status 65280
+2018-09-20 11:32:32 pid:2282 Worker[2282] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:17) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 17"
+2018-09-20 11:32:32 pid:2271 worker[PHPSocketIO:2282] exit with status 65280
+2018-09-20 11:32:58 pid:2284 Worker[2284] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:17) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 17"
+2018-09-20 11:32:58 pid:2271 worker[PHPSocketIO:2284] exit with status 65280
+2018-09-20 11:33:00 pid:2289 Worker[2289] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:17) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 17"
+2018-09-20 11:33:00 pid:2271 worker[PHPSocketIO:2289] exit with status 65280
+2018-09-20 11:33:25 pid:2290 Worker[2290] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:17) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 17"
+2018-09-20 11:33:25 pid:2271 worker[PHPSocketIO:2290] exit with status 65280
+2018-09-20 11:33:28 pid:2295 Worker[2295] process terminated with ERROR: E_ERROR "Cannot redeclare onLogin() (previously declared in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php:17) in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 17"
+2018-09-20 11:33:28 pid:2271 worker[PHPSocketIO:2295] exit with status 65280
+2018-09-20 11:41:41 pid:2375 Workerman[start.php] start in DEBUG mode
+2018-09-20 11:48:10 pid:2456 Workerman[start.php] start in DEBUG mode
+2018-09-20 11:49:15 pid:2474 Workerman[start.php] start in DEBUG mode
+2018-09-20 11:49:27 pid:2474 worker[PHPSocketIO:2476] exit with status 11
+2018-09-20 11:49:52 pid:2474 worker[PHPSocketIO:2482] exit with status 11
+2018-09-20 11:49:56 pid:2474 worker[PHPSocketIO:2489] exit with status 11
+2018-09-20 11:50:16 pid:2474 worker[PHPSocketIO:2491] exit with status 11
+2018-09-20 11:51:27 pid:2474 worker[PHPSocketIO:2497] exit with status 11
+2018-09-20 11:51:41 pid:2518 Workerman[start.php] start in DEBUG mode
+2018-09-20 17:34:14 pid:9864 Workerman[start.php] start in DEBUG mode
+2018-09-20 17:36:35 pid:9992 Workerman[start.php] start in DEBUG mode
+2018-09-20 17:58:11 pid:10800 Workerman[start.php] start in DEBUG mode
+2018-09-20 18:00:16 pid:10838 Workerman[start.php] start in DEBUG mode
+2018-09-21 17:14:32 pid:8138 Workerman[start.php] start in DEBUG mode
+2018-09-21 17:15:54 pid:8166 Workerman[start.php] stop 
+2018-09-21 17:15:54 pid:8166 Workerman[start.php] not run
+2018-09-21 17:16:01 pid:8167 Workerman[start.php] start in DEBUG mode
+2018-09-21 17:16:37 pid:8177 Workerman[start.php] start in DEBUG mode
+2018-09-21 17:20:29 pid:487 Workerman[start.php] start in DEBUG mode
+2018-09-22 10:15:25 pid:1640 Workerman[start.php] start in DEBUG mode
+2018-09-22 17:09:00 pid:8007 Workerman[start.php] start in DEBUG mode
+2018-09-25 15:52:16 pid:4639 Workerman[start.php] start in DEBUG mode
+2018-09-25 16:25:51 pid:5255 Workerman[start.php] start in DEBUG mode
+2018-09-25 16:28:11 pid:5322 Workerman[start.php] start in DEBUG mode
+2018-09-25 16:29:29 pid:5353 Workerman[start.php] start in DEBUG mode
+2018-09-25 16:30:38 pid:5384 Workerman[start.php] start in DEBUG mode
+2018-09-25 16:31:45 pid:5405 Workerman[start.php] start in DEBUG mode
+2018-09-25 16:37:00 pid:5617 Workerman[start.php] start in DEBUG mode
+2018-09-25 16:37:55 pid:5634 Workerman[start.php] start in DEBUG mode
+2018-09-25 17:59:31 pid:7331 Workerman[start.php] start in DEBUG mode
+2018-09-26 17:48:50 pid:5814 Workerman[start.php] start in DEBUG mode
+2018-09-26 17:49:11 pid:5823 Workerman[start.php] start in DEBUG mode
+2018-09-27 11:34:18 pid:14310 Workerman[start.php] start in DEBUG mode
+2018-09-27 11:35:53 pid:14327 Workerman[start.php] start in DEBUG mode
+2018-09-27 11:37:31 pid:14345 Workerman[start.php] start in DEBUG mode
+2018-09-27 11:42:24 pid:14405 Workerman[start.php] start in DEBUG mode
+2018-09-27 11:43:30 pid:14418 Workerman[start.php] start in DEBUG mode
+2018-09-27 11:44:04 pid:14420 Worker[14420] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 172"
+2018-09-27 11:44:04 pid:14418 worker[PHPSocketIO:14420] exit with status 65280
+2018-09-27 11:44:08 pid:14426 Worker[14426] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 172"
+2018-09-27 11:44:08 pid:14418 worker[PHPSocketIO:14426] exit with status 65280
+2018-09-27 11:47:20 pid:14458 Workerman[start.php] start in DEBUG mode
+2018-09-27 11:52:59 pid:14460 Worker[14460] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 172"
+2018-09-27 11:52:59 pid:14458 worker[PHPSocketIO:14460] exit with status 65280
+2018-09-27 11:53:14 pid:14522 Worker[14522] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 172"
+2018-09-27 11:53:14 pid:14458 worker[PHPSocketIO:14522] exit with status 65280
+2018-09-27 11:53:57 pid:14533 Workerman[start.php] start in DEBUG mode
+2018-09-27 11:54:13 pid:14535 Worker[14535] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 172"
+2018-09-27 11:54:13 pid:14533 worker[PHPSocketIO:14535] exit with status 65280
+2018-09-27 11:57:35 pid:14571 Workerman[start.php] start in DEBUG mode
+2018-09-27 12:00:02 pid:14597 Workerman[start.php] start in DEBUG mode
+2018-09-27 14:17:31 pid:15684 Workerman[start.php] start in DEBUG mode
+2018-09-27 14:20:01 pid:15706 Workerman[start.php] start in DEBUG mode
+2018-09-27 14:20:07 pid:15708 Worker[15708] process terminated with ERROR: E_ERROR "Call to a member function emit() on a non-object in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 145"
+2018-09-27 14:20:07 pid:15706 worker[PHPSocketIO:15708] exit with status 65280
+2018-09-27 14:20:10 pid:15710 Worker[15710] process terminated with ERROR: E_ERROR "Call to a member function emit() on a non-object in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 145"
+2018-09-27 14:20:10 pid:15706 worker[PHPSocketIO:15710] exit with status 65280
+2018-09-27 14:28:25 pid:15777 Workerman[start.php] start in DEBUG mode
+2018-09-27 14:28:32 pid:15779 Worker[15779] process terminated with ERROR: E_ERROR "Call to a member function emit() on a non-object in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 145"
+2018-09-27 14:28:32 pid:15777 worker[PHPSocketIO:15779] exit with status 65280
+2018-09-27 14:28:35 pid:15781 Worker[15781] process terminated with ERROR: E_ERROR "Call to a member function emit() on a non-object in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 145"
+2018-09-27 14:28:35 pid:15777 worker[PHPSocketIO:15781] exit with status 65280
+2018-09-27 14:29:14 pid:15790 Workerman[start.php] start in DEBUG mode
+2018-09-27 14:29:17 pid:15792 Worker[15792] process terminated with ERROR: E_ERROR "Call to a member function emit() on a non-object in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 143"
+2018-09-27 14:29:17 pid:15790 worker[PHPSocketIO:15792] exit with status 65280
+2018-09-27 14:29:27 pid:15793 Worker[15793] process terminated with ERROR: E_ERROR "Call to a member function emit() on a non-object in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 143"
+2018-09-27 14:29:27 pid:15790 worker[PHPSocketIO:15793] exit with status 65280
+2018-09-27 14:31:41 pid:15795 Worker[15795] process terminated with ERROR: E_ERROR "Call to a member function emit() on a non-object in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 143"
+2018-09-27 14:31:41 pid:15790 worker[PHPSocketIO:15795] exit with status 65280
+2018-09-27 14:31:47 pid:15819 Workerman[start.php] start in DEBUG mode
+2018-09-27 14:46:25 pid:15956 Workerman[start.php] start in DEBUG mode
+2018-09-27 14:48:01 pid:15973 Workerman[start.php] start in DEBUG mode
+2018-09-27 14:49:58 pid:15997 Workerman[start.php] start in DEBUG mode
+2018-09-27 14:50:11 pid:15999 Worker[15999] process terminated with ERROR: E_ERROR "Call to a member function broadcast() on a non-object in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/src/Socket.php on line 114"
+2018-09-27 14:50:11 pid:15997 worker[PHPSocketIO:15999] exit with status 65280
+2018-09-27 14:50:39 pid:16001 Worker[16001] process terminated with ERROR: E_ERROR "Call to a member function broadcast() on a non-object in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/src/Socket.php on line 114"
+2018-09-27 14:50:39 pid:15997 worker[PHPSocketIO:16001] exit with status 65280
+2018-09-27 14:52:17 pid:16038 Workerman[start.php] start in DEBUG mode
+2018-09-27 14:58:50 pid:16095 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:01:48 pid:16097 Worker[16097] process terminated with ERROR: E_ERROR "Call to a member function broadcast() on a non-object in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/src/Socket.php on line 114"
+2018-09-27 15:01:48 pid:16095 worker[PHPSocketIO:16097] exit with status 65280
+2018-09-27 15:03:28 pid:16143 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:04:41 pid:16173 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:07:13 pid:16195 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:12:06 pid:16253 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:12:17 pid:16255 Worker[16255] process terminated with ERROR: E_ERROR "Call to a member function emit() on a non-object in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 155"
+2018-09-27 15:12:17 pid:16253 worker[PHPSocketIO:16255] exit with status 65280
+2018-09-27 15:12:49 pid:16263 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:12:59 pid:16265 Worker[16265] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 155"
+2018-09-27 15:12:59 pid:16263 worker[PHPSocketIO:16265] exit with status 65280
+2018-09-27 15:14:35 pid:16285 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:14:57 pid:16295 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:15:03 pid:16298 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:15:17 pid:16304 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:17:55 pid:16341 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:18:04 pid:16345 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:19:23 pid:16363 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:19:40 pid:16365 Worker[16365] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 156"
+2018-09-27 15:19:40 pid:16363 worker[PHPSocketIO:16365] exit with status 65280
+2018-09-27 15:24:04 pid:16407 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:24:14 pid:16409 Worker[16409] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 156"
+2018-09-27 15:24:14 pid:16407 worker[PHPSocketIO:16409] exit with status 65280
+2018-09-27 15:24:49 pid:16421 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:24:56 pid:16423 Worker[16423] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 157"
+2018-09-27 15:24:56 pid:16421 worker[PHPSocketIO:16423] exit with status 65280
+2018-09-27 15:26:25 pid:16440 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:26:29 pid:16442 Worker[16442] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 157"
+2018-09-27 15:26:29 pid:16440 worker[PHPSocketIO:16442] exit with status 65280
+2018-09-27 15:26:49 pid:16448 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:26:53 pid:16450 Worker[16450] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 157"
+2018-09-27 15:26:53 pid:16448 worker[PHPSocketIO:16450] exit with status 65280
+2018-09-27 15:27:26 pid:16461 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:27:32 pid:16463 Worker[16463] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 157"
+2018-09-27 15:27:32 pid:16461 worker[PHPSocketIO:16463] exit with status 65280
+2018-09-27 15:28:22 pid:16473 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:28:52 pid:16480 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:28:55 pid:16482 Worker[16482] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 158"
+2018-09-27 15:28:55 pid:16480 worker[PHPSocketIO:16482] exit with status 65280
+2018-09-27 15:30:09 pid:16497 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:30:14 pid:16499 Worker[16499] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 158"
+2018-09-27 15:30:14 pid:16497 worker[PHPSocketIO:16499] exit with status 65280
+2018-09-27 15:31:16 pid:16514 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:31:22 pid:16516 Worker[16516] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 158"
+2018-09-27 15:31:22 pid:16514 worker[PHPSocketIO:16516] exit with status 65280
+2018-09-27 15:34:09 pid:16545 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:34:14 pid:16547 Worker[16547] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 158"
+2018-09-27 15:34:14 pid:16545 worker[PHPSocketIO:16547] exit with status 65280
+2018-09-27 15:36:47 pid:16571 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:36:52 pid:16573 Worker[16573] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 159"
+2018-09-27 15:36:52 pid:16571 worker[PHPSocketIO:16573] exit with status 65280
+2018-09-27 15:37:17 pid:16580 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:37:25 pid:16582 Worker[16582] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 159"
+2018-09-27 15:37:25 pid:16580 worker[PHPSocketIO:16582] exit with status 65280
+2018-09-27 15:38:14 pid:16594 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:38:18 pid:16596 Worker[16596] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 158"
+2018-09-27 15:38:18 pid:16594 worker[PHPSocketIO:16596] exit with status 65280
+2018-09-27 15:38:49 pid:16602 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:38:57 pid:16604 Worker[16604] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 158"
+2018-09-27 15:38:57 pid:16602 worker[PHPSocketIO:16604] exit with status 65280
+2018-09-27 15:39:24 pid:16614 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:39:31 pid:16616 Worker[16616] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 158"
+2018-09-27 15:39:31 pid:16614 worker[PHPSocketIO:16616] exit with status 65280
+2018-09-27 15:40:29 pid:16628 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:40:39 pid:16630 Worker[16630] process terminated with ERROR: E_ERROR "Cannot access empty property in /Users/zhuanglong/Desktop/Work/dev/api/team/socket.io/app/start_io.php on line 160"
+2018-09-27 15:40:39 pid:16628 worker[PHPSocketIO:16630] exit with status 65280
+2018-09-27 15:42:41 pid:16655 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:44:45 pid:16685 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:51:44 pid:16745 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:56:27 pid:16798 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:57:48 pid:16812 Workerman[start.php] start in DEBUG mode
+2018-09-27 15:59:54 pid:16829 Workerman[start.php] start in DEBUG mode
+2018-09-27 16:04:45 pid:16883 Workerman[start.php] start in DEBUG mode
+2018-09-27 16:28:00 pid:17353 Workerman[start.php] start in DEBUG mode
+2018-09-27 16:29:53 pid:17385 Workerman[start.php] start in DEBUG mode
+2018-09-27 17:59:41 pid:17385 worker[PHPSocketIO:17387] exit with status 11
+2018-09-28 09:18:00 pid:1103 Workerman[start.php] start in DEBUG mode
+2018-09-28 09:28:29 pid:1346 Workerman[start.php] start in DEBUG mode
+2018-09-28 11:06:21 pid:2559 Workerman[start.php] start in DEBUG mode
+2018-09-28 11:08:52 pid:2583 Workerman[start.php] start in DEBUG mode
+2018-09-28 11:13:53 pid:2638 Workerman[start.php] start in DEBUG mode
+2018-09-28 11:21:27 pid:2701 Workerman[start.php] start in DEBUG mode
+2018-09-28 11:47:44 pid:3569 Workerman[start.php] start in DEBUG mode
+2018-09-28 11:49:55 pid:3603 Workerman[start.php] start in DEBUG mode
+2018-09-28 15:09:55 pid:6564 Workerman[start.php] start in DEBUG mode
+2018-09-28 15:11:06 pid:6622 Workerman[start.php] start in DEBUG mode
+2018-09-28 16:32:33 pid:8565 Workerman[start.php] start in DEBUG mode

@@ -1,0 +1,473 @@
+import React, { PureComponent } from 'react';
+import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import { Table,Modal,Select,message, DatePicker,InputNumber,Icon,Col, Form,Button ,Row ,Input,Upload} from 'antd';
+import http from '@/utils/http';
+import Api from '@/common/api';
+import moment from 'moment';
+import { connect } from 'dva';
+
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
+
+@connect(({ user }) => ({
+  currentUser: user.currentUser,
+}))
+@Form.create()
+class MakingCoupons extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      getLoading: true,
+      moudelVisible:false,
+      moudelDate: [],
+      fileImage: [],
+      previewVisible:false,
+      fileList:[],
+      previewImage:[],
+      begindate:'',
+      enddate:'',
+      billno:'',
+      StatusVisible:'0',//编辑还是新增
+    };
+    this.columns = [
+      {
+        title: '编号',
+        dataIndex: 'billno',
+        key: 'billno',
+        width: 260,
+      },
+      {
+        title: '标题',
+        dataIndex: 'title',
+        key: 'title',
+        width: 200,
+      },
+      {
+        title: '可使用的商品',
+        dataIndex: 'keyword',
+        key: 'keyword',
+        width: 200,
+      },
+      {
+        title: '优惠金额',
+        dataIndex: 'rmb',
+        key: 'rmb',
+        width: 200,
+      },
+      {
+        title: '领取数量',
+        dataIndex: 'num',
+        key: 'num',
+        width: 200,
+      },
+      {
+        title: '限定数量',
+        dataIndex: 'limitnum',
+        key: 'limitnum',
+        width: 200,
+      },
+      {
+        title: '使用金额',
+        dataIndex: 'krmb',
+        key: 'krmb',
+        width: 200,
+      },
+      {
+        title: '有效期',
+        dataIndex: 'enddate',
+        key: 'enddate',
+      },
+      {
+        title: '操作',
+        key: 'operation',
+        fixed: 'right',
+        width: 200,
+        render: (text, record) => {
+          this.setState({
+            RealName_billno: record.billno,
+          });
+          //操作菜单
+          return (
+            <div>
+              <a style={{marginRight:40}}
+                onClick={ev => {this.UpdateModal(ev, record);}} >
+                更改  
+              </a>
+              <a onClick={(ev) => this.delTrack(ev,text)}>
+                  {record.status=="-1"?`上架`:`下架`}
+              </a>
+            </div>
+          );
+          
+        },
+      },
+    ];
+  }
+
+  //挂载前
+  componentDidMount() {
+    this.getList();
+  }
+  //获取全部优惠卷信息
+  getList = () => {
+    http({
+      method: 'get',
+      api: 'get_mall_coupon',
+      params: {
+        admin: this.props.currentUser.admin,
+      },
+    })
+      .then(result => {
+        const { status, msg, data } = result;
+        if (status === '0') {
+        } else {
+          message.warn(msg);
+        }
+        this.setState({
+          getLoading: false,
+          submitting: false,
+          moudelDate: data.list,
+        });
+      })
+      .catch(() => {
+        this.setState({ getLoading: false });
+      });
+    };
+    //点击制作优惠卷触发
+    gotoAdd=()=>{
+      this.setState({
+        moudelVisible:true
+      })
+      this.props.form.setFieldsValue({
+        limitnum:1
+      })
+    }
+  //编辑
+  UpdateModal=(ev, record)=>{
+    this.setState({
+      StatusVisible:'1',
+      moudelVisible:true,
+      billno:record.billno,
+    })
+    this.state.fileList[0]={
+      uid: 1,
+      name: 'image1',
+      status: 'done',
+      url:record.image,
+    };
+    this.state.fileImage[0]=record.image;
+    this.props.form.setFieldsValue({
+      // enddate:record.enddate,
+      // begindate:record.begindate,
+      enddate:[moment(record.begindate), moment(record.enddate)],
+      title:record.title,
+      rmb :record.rmb,
+      krmb:record.krmb,
+      keyword:record.keyword,
+      stype:record.stype,
+      limitnum:record.limitnum,
+      kwnum:record.limitnum,
+    })
+  }
+  delTrack=(ev, record)=>{
+    const status=record.status
+    http({
+      method: 'get',
+      api: 'set_mcoup_staus',
+      params: { 
+        flat: status=='0'? '-1':'0',
+        billno: record.billno,
+      },
+    }).then((result) => {
+      const { status, msg, data } = result;
+      if (status == '0') {
+        message.info('修改成功');
+        console.log(record)
+        this.getList();
+      } else {
+        message.info(msg);
+      }
+    }).catch(() => {
+      message.info('操作失败');
+    });
+  }
+    //对话框点击确定触发
+  ModalOk=(e)=>{
+    this.setState({ loading: true });
+      var enddate,begindate,billno,admin
+      begindate = this.state.begindate;
+      enddate = this.state.enddate
+      admin=this.props.currentUser.admin
+      billno=this.state.billno
+      e.preventDefault();
+      this.props.form.validateFields((err, values) => {
+      if (!err) {
+        if(this.state.fileList.length==0){
+            message.info("请点击添加图片");
+          return;
+        }
+        const data = {
+          image:this.state.fileImage[0]?this.state.fileImage[0]:null,
+          billno:billno,
+          admin:admin,
+          enddate:enddate,
+          begindate:begindate,
+          title:values.title,
+          rmb :values.rmb,
+          krmb:values.krmb,
+          keyword:values.keyword,
+          stype:this.state.stype,
+          limitnum:values.limitnum,
+          kwnum:values.limitnum,
+          admincode:this.props.currentUser.admincode
+        }
+        http({
+          method: 'post',
+          api: 'set_mall_coupon',
+          data: {
+            ...data
+          }
+        }).then((result) => {
+          const { status, msg, data } = result;
+          if (status === '0') {
+            message.info('成功');
+            this.handleCancel();//点击关闭
+            this.getList();
+            this.props.form.resetFields();
+            this.setState({
+              moudelVisible :false
+            })
+          } else {
+            message.info(msg);
+          }this.setState( { 
+            submitting: false,
+            modalVisible: false, });
+           }).catch((error) => {
+            message.info("错误");
+            this.setState({ submitting: false });
+          });
+      }
+    });
+  }
+  //对话窗关闭
+  onCancel=()=>{
+    this.setState({
+      moudelVisible :false
+    })
+  }
+  // 关闭并初始化
+  handleCancel = async () => {
+      this.props.form.resetFields();
+      await this.setState({
+        fileList: [],
+        fileImage: [],
+        previewImage: [],
+        begindate: '',
+        enddate: '',
+        StatusVisible:'0',
+        billno:''
+      });
+  };
+  onChange=async(date,dateString)=>{
+    await this.setState({
+      begindate:dateString[0],
+      enddate:dateString[1]
+    })
+  }
+  //下拉触发的函数
+  handleChange2=async(value)=>{
+    await this.setState({
+      stype:value
+    })
+  }
+  //限定输入数字
+  numberonChange=async(value)=>{
+    await this.setState({
+      limitnum:value
+    })
+  }
+  numberonChange1=async(value)=>{
+    await this.setState({
+      kwnum:value
+    })
+  }
+  // 是否显示预览
+handleCancelPreview = async (file) => {
+  this.setState({ previewVisible: false });
+}
+//预览
+handlePreview = async (file,previewImage) => {
+  if (!file.url && !file.preview) {
+    file.preview = await getBase64(file.originFileObj);
+  }
+  this.setState({
+    previewImage: file.url || file.preview,
+    previewVisible: true
+  });
+};
+// 上传图片
+handleChangePreview = ({fileList }) => {
+  const fileImageArray = [];
+  for (let i = 0; i < fileList.length; i++) {
+    let a = '';
+    if (fileList[i].response) {
+      a = fileList[i].response.data.source;
+    } else {
+      a = fileList[i].url
+    }
+    fileImageArray[i] = a;//a 图片url地址
+  }
+  setTimeout(() => {
+    this.setState({
+      fileImage: fileImageArray
+    });
+  }, 4000);
+  this.setState({
+    fileList
+  });
+}
+beforeUpload = (file, fileList) => {
+}
+  render() {
+    const {StatusVisible, moudelVisible,moudelDate,previewVisible,previewImage,getLoading, delLoading,fileList } = this.state;
+    const {RangePicker } = DatePicker;
+    const uploadButton = (
+      <div>
+        <Icon type="plus" />
+        <div className="ant-upload-text">添加</div>
+      </div>
+    );
+    const {
+      form: { getFieldDecorator, setFieldsValue, }
+    } = this.props;
+    return (
+      <PageHeaderWrapper>
+        <Button type="primary" 
+        onClick={this.gotoAdd}
+        >
+          制作优惠卷
+        </Button>
+        <Modal
+        width="40%"
+        afterClose={this.handleCancel}
+        maskClosable={false}//强制渲染
+        title={(StatusVisible=='1' ? `更改`:`新增`)
+          +`优惠卷`
+        }
+        visible={moudelVisible}
+        onCancel={this.onCancel}
+        onOk={this.ModalOk}
+        >
+          <Form layout="vertical">
+            <Row gutter={24}>
+              <Col>
+                <Form.Item label="标题">
+                  {getFieldDecorator('title', {
+                    rules: [{ required: true, message: '请输入商品标题' }],
+                  })(<Input placeholder="请输入商品标题" id="title" name="title" type="text" />)}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item label="优惠额">
+                  {getFieldDecorator('rmb', {
+                    rules: [{ required: true, message: '请输入优惠额' }],
+                  })(<Input placeholder="请输入优惠额" id="rmb" name="rmb" type="text" />)}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item label="消费额">
+                  {getFieldDecorator('krmb', {
+                    rules: [{ required: true, message: '请输入消费额' }],
+                  })(<InputNumber min={1}step={0.1} />,)}
+                </Form.Item>
+              </Col> 
+              <Col>
+                <Form.Item label="派发量">
+                  {getFieldDecorator('limitnum', {
+                    rules: [{ required: true, message: '请输入大于0的纯数字' }],
+                  })(<InputNumber min={1}onChange={this.numberonChange} />,)}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item label="满足的单品数量">
+                  {getFieldDecorator('kwnum',)
+                  (<InputNumber min={1} onChange={this.numberonChange1} />,)}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item label="优惠券类型">
+                  {getFieldDecorator('stype', {
+                    rules: [{ required: true, message: '请选择优惠券类型' }],
+                  })(
+                    <Select
+                    onChange={this.handleChange2}
+                    >
+                      <Select.Option value="1">全品类</Select.Option>
+                      <Select.Option value="0">限品类</Select.Option>
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item label="商品">
+                  {getFieldDecorator('keyword', {
+                    rules: [{ required: true, message: '请输入商品' }],
+                  })(<Input placeholder="请输入商品" id="keyword" name="keyword" type="text" />)}
+                </Form.Item>
+              </Col> 
+              <Col>
+                <Form.Item label="有效期">
+                {getFieldDecorator('hidden')(
+                    <Input hidden="hidden"/>
+                  )}
+                {getFieldDecorator('enddate')(
+                    <RangePicker
+                    style={{ width: '100%' }}
+                    onChange={this.onChange}
+                    showTime
+                  />
+                  )}
+                </Form.Item>
+              </Col>
+              <Col>
+              <Form.Item label="详情图片">
+              <Upload 
+                  name = "file"
+                  action={Api['uploadimg']}
+                  listType="picture-card"
+                  fileList={fileList}
+                  onPreview={this.handlePreview}
+                  onChange={this.handleChangePreview}
+                >
+                {fileList.length >=1 ? null : uploadButton}
+                </Upload>
+                {/* 预览效果 */}
+                <Modal visible={previewVisible} footer={null} onCancel={this.handleCancelPreview}>
+                  <img  alt="example" style={{ width: '100%' }} src={previewImage} />
+                </Modal> 
+              </Form.Item>
+            </Col> 
+            </Row>
+          </Form>
+        </Modal>
+        <Table
+          scroll={{ x: 1800, y: 600 }} //高
+          dataSource={moudelDate} //数据来源
+          columns={this.columns} //每行显示
+          pagination={{
+            onChange: this.handleTableChange,
+            pageSize: 15,
+            defaultCurrent: 1,            
+          }}
+        />
+      </PageHeaderWrapper>
+    );
+  }
+}
+export default MakingCoupons;

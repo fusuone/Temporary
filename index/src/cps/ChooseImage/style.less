@@ -1,0 +1,67 @@
+@width: 70px;
+@height: 70px;
+@radius: 4px;
+
+:global {
+  .choose-image-container {
+    overflow: hidden;
+    width: @width;
+    height: @height;
+    // 选择图片
+    .choose-image {
+      width: inherit;
+      height: inherit;
+      border: 1px dashed #d9d9d9;
+      border-radius: @radius;
+      background-color: #fafafa;
+      cursor: pointer;
+      .icon {
+        display: table-cell;
+        width: inherit;
+        height: inherit;
+        vertical-align: middle;
+        font-size: 28px;
+        color: #999;
+      }
+      input {
+        display: none;
+      }
+    }
+    // 展示图片
+    .show-image {
+      position: relative;
+      width: inherit;
+      height: inherit;
+      border-radius: @radius;
+      overflow: hidden;
+      .image {
+        width: inherit;
+        height: inherit;
+      }
+      .image-handel {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0,0,0,0.6);
+        opacity: 0;
+        border-radius: @radius;
+        transition: .3s;
+        .icon {
+          color: #fff;
+          font-size: 16px;
+          cursor: pointer;
+        }
+      }
+      &:hover {
+        .image-handel {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
